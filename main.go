@@ -94,7 +94,7 @@ func sleep(ms int) string {
 	start := time.Now().UnixNano()
 	time.Sleep(time.Duration(ms) * time.Millisecond)
 	end := time.Now().UnixNano()
-	return fmt.Sprintf("Slept for %.2f milliseconds.\n", float64(end-start)/1000000)
+	return fmt.Sprintf("SLEPT for %.2f milliseconds.\n", float64(end-start)/1000000)
 }
 
 func parseIntParam(r *http.Request, param string) (int, bool, error) {
