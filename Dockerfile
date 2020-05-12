@@ -1,7 +1,9 @@
-FROM golang:1.12.1-alpine3.9
-ENV GOPATH="/go"
-RUN ["mkdir", "-p", "/go/src/github.com/rancher/demo"]
-COPY * /go/src/github.com/rancher/demo/
-WORKDIR /go/src/github.com/rancher/demo
-RUN ["go", "build", "-o", "demo"]
-CMD ["./demo"]
+FROM golang AS builder
+
+WORKDIR /go/src/app
+COPY . /go/src/app
+RUN CGO_ENABLED=0 go build -o /bin/autoscale-go .
+
+FROM gcr.io/distroless/static:nonroot
+COPY --from=builder /bin/autoscale-go /sample
+ENTRYPOINT ["/sample"]
